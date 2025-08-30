@@ -839,12 +839,6 @@ textarea:focus {
   border-bottom: 1px solid var(--border-color);
 }
 
-.section-header h2 {
-  margin-bottom: 0;
-  font-size: 24px;
-  color: var(--text-primary);
-  font-weight: 700;
-}
 
 .recipes-container {
   display: grid;
