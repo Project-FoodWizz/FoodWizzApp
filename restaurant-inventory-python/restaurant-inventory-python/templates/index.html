@@ -96,7 +96,7 @@
                 <span id="cart-subtotal">$0.00</span>
             </div>
             <div class="cart-total-row">
-                <span>Tax (8%):</span>
+                <span>Tax (7%):</span>
                 <span id="cart-tax">$0.00</span>
             </div>
             <div class="cart-total-row final">
@@ -112,7 +112,7 @@
 
     <!-- Cart Toggle Button -->
     <button class="cart-toggle" onclick="toggleCart()">
-        🛒
+        Cart
         <span class="cart-badge" id="cart-badge">0</span>
     </button>
 
@@ -129,159 +129,15 @@
         let cart = [];
         let cartTotal = 0;
         
-        // Language support
-        let currentLanguage = 'en';
-        const translations = {
-            en: {
-                // Dashboard
-                'dashboard': 'Dashboard',
-                'dishes': 'Dishes',
-                'reports': 'Reports',
-                'alerts': 'Alerts',
-                'settings': 'Settings',
-                'total_ingredients': 'Total Ingredients',
-                'menu_items': 'Menu Items',
-                'low_stock_items': 'Low Stock Items',
-                'out_of_stock': 'Out of Stock',
-                'quick_actions': 'Quick Actions',
-                'add_ingredient': 'Add Ingredient',
-                'edit_ingredient': 'Edit Ingredient',
-                'export_data': 'Export Data',
-                'view_distributors': 'View Distributors',
-                'featured_products': 'Featured Products',
-                'inventory_overview': 'Inventory Overview',
-                'inventory_value': 'Inventory Value',
-                'top_selling_dishes': 'Top Selling Dishes',
-                'shopping_cart': 'Shopping Cart',
-                'clear_cart': 'Clear Cart',
-                'finalize_order': 'Finalize Order',
-                'subtotal': 'Subtotal',
-                'tax': 'Tax (8%)',
-                'total': 'Total',
-                'search_ingredients': 'Search ingredients, dishes, or suppliers...',
-                'search_dishes': 'Search dishes by name, category, or ingredients...'
-            },
-            es: {
-                // Dashboard
-                'dashboard': 'Panel Principal',
-                'dishes': 'Platos',
-                'reports': 'Reportes',
-                'alerts': 'Alertas',
-                'settings': 'Configuración',
-                'total_ingredients': 'Total Ingredientes',
-                'menu_items': 'Elementos del Menú',
-                'low_stock_items': 'Artículos Bajos en Stock',
-                'out_of_stock': 'Sin Stock',
-                'quick_actions': 'Acciones Rápidas',
-                'add_ingredient': 'Agregar Ingrediente',
-                'edit_ingredient': 'Editar Ingrediente',
-                'export_data': 'Exportar Datos',
-                'view_distributors': 'Ver Distribuidores',
-                'featured_products': 'Productos Destacados',
-                'inventory_overview': 'Vista General del Inventario',
-                'inventory_value': 'Valor del Inventario',
-                'top_selling_dishes': 'Platos Más Vendidos',
-                'shopping_cart': 'Carrito de Compras',
-                'clear_cart': 'Limpiar Carrito',
-                'finalize_order': 'Finalizar Pedido',
-                'subtotal': 'Subtotal',
-                'tax': 'Impuesto (8%)',
-                'total': 'Total',
-                'search_ingredients': 'Buscar ingredientes, platos o proveedores...',
-                'search_dishes': 'Buscar platos por nombre, categoría o ingredientes...'
-            },
-            zh: {
-                // Dashboard
-                'dashboard': '仪表板',
-                'dishes': '菜品',
-                'reports': '报告',
-                'alerts': '警报',
-                'settings': '设置',
-                'total_ingredients': '总配料',
-                'menu_items': '菜单项目',
-                'low_stock_items': '低库存项目',
-                'out_of_stock': '缺货',
-                'quick_actions': '快速操作',
-                'add_ingredient': '添加配料',
-                'edit_ingredient': '编辑配料',
-                'export_data': '导出数据',
-                'view_distributors': '查看分销商',
-                'featured_products': '特色产品',
-                'inventory_overview': '库存概览',
-                'inventory_value': '库存价值',
-                'top_selling_dishes': '最畅销菜品',
-                'shopping_cart': '购物车',
-                'clear_cart': '清空购物车',
-                'finalize_order': '完成订单',
-                'subtotal': '小计',
-                'tax': '税 (8%)',
-                'total': '总计',
-                'search_ingredients': '搜索配料、菜品或供应商...',
-                'search_dishes': '按名称、类别或配料搜索菜品...'
-            }
-        };
+
 
         // Application initialization - runs when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Load saved language preference
-            const savedLanguage = localStorage.getItem('foodwizz-language');
-            if (savedLanguage && translations[savedLanguage]) {
-                currentLanguage = savedLanguage;
-            }
-            
             loadUserInfo();           // Load and display user information
             showContent(0);           // Show dashboard by default
-            updateLanguage();         // Apply current language
-            
-            // Set initial active language flag
-            document.getElementById(`lang-${currentLanguage}`).classList.add('active');
         });
 
-        /**
-         * Changes the application language and updates all text
-         * @param {string} lang - Language code (en, es, zh)
-         */
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('foodwizz-language', lang);
-            
-            // Update language flag active states
-            document.querySelectorAll('.language-flag').forEach(flag => {
-                flag.classList.remove('active');
-            });
-            document.getElementById(`lang-${lang}`).classList.add('active');
-            
-            updateLanguage();
-        }
 
-        /**
-         * Updates all text in the application to the current language
-         */
-        function updateLanguage() {
-            // Update navigation
-            const navButtons = document.querySelectorAll('.main-nav button');
-            if (navButtons.length >= 5) {
-                navButtons[0].textContent = translations[currentLanguage].dashboard;
-                navButtons[1].textContent = translations[currentLanguage].dishes;
-                navButtons[2].textContent = translations[currentLanguage].reports;
-                navButtons[3].textContent = translations[currentLanguage].alerts;
-                navButtons[4].textContent = translations[currentLanguage].settings;
-            }
-
-            // Update cart
-            document.getElementById('cart-title').textContent = translations[currentLanguage].shopping_cart;
-            document.querySelector('.cart-actions .btn-outline').textContent = translations[currentLanguage].clear_cart;
-            document.querySelector('.cart-actions .btn-primary').textContent = translations[currentLanguage].finalize_order;
-            document.querySelector('.cart-total-row:nth-child(1) span:first-child').textContent = translations[currentLanguage].subtotal;
-            document.querySelector('.cart-total-row:nth-child(2) span:first-child').textContent = translations[currentLanguage].tax;
-            document.querySelector('.cart-total-row.final span:first-child').textContent = translations[currentLanguage].total;
-
-            // Update search placeholders
-            const dashboardSearch = document.getElementById('dashboard-search');
-            const dishesSearch = document.getElementById('dishes-search');
-            if (dashboardSearch) dashboardSearch.placeholder = translations[currentLanguage].search_ingredients;
-            if (dishesSearch) dishesSearch.placeholder = translations[currentLanguage].search_dishes;
-        }
 
         /**
          * Toggles the shopping cart visibility
@@ -344,7 +200,7 @@
             
             // Update totals
             cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = cartTotal * 0.08;
+            const tax = cartTotal * 0.07;
             const total = cartTotal + tax;
             
             cartBadge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -388,7 +244,7 @@
             }
             
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = total * 0.08;
+            const tax = total * 0.07;
             const finalTotal = total + tax;
             
             showNotification(`Order finalized! Total: $${finalTotal.toFixed(2)}`, 'success');
@@ -640,6 +496,18 @@
                             <button class="btn-close" onclick="closeModal()">&times;</button>
                         </div>
                         <div class="form-content">
+                            <!-- Search bar for inventory -->
+                            <div class="search-container" style="margin-bottom: 1.5rem;">
+                                <div class="search-box">
+                                    <input type="text" id="inventory-search" placeholder="Search ingredients..." onkeyup="filterInventoryContent(this.value)">
+                                    <button type="button" class="search-btn">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <path d="m21 21-4.35-4.35"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="inventory-grid">
                                 ${ingredients.map(ingredient => `
                                     <div class="inventory-card ${ingredient.stock <= ingredient.min_stock ? 'low-stock' : ''} ${ingredient.stock === 0 ? 'out-of-stock' : ''}">
@@ -918,7 +786,7 @@
                         <div class="chart-header">
                             <h3>Sales Performance</h3>
                             <p>Track daily, weekly, and monthly sales trends to optimize business performance</p>
-                            <button class="chart-expand-icon">📊</button>
+                            <button class="chart-expand-icon">+</button>
                         </div>
                         <div class="chart-container">
                             <canvas id="salesChart"></canvas>
@@ -963,7 +831,7 @@
                         <div class="chart-header">
                             <h3>Top Selling Dishes</h3>
                             <p>Analyze dish popularity and performance across different time periods</p>
-                            <button class="chart-expand-icon">🍽️</button>
+                            <button class="chart-expand-icon">+</button>
                         </div>
                         <div class="chart-container">
                             <canvas id="dishesChart"></canvas>
@@ -994,7 +862,7 @@
                         <div class="chart-header">
                             <h3>Profit Analysis</h3>
                             <p>Monitor profit margins and cost analysis for better financial planning</p>
-                            <button class="chart-expand-icon">💰</button>
+                            <button class="chart-expand-icon">+</button>
                         </div>
                         <div class="chart-container">
                             <canvas id="profitChart"></canvas>
@@ -1039,7 +907,7 @@
                         <div class="chart-header">
                             <h3>Monthly Revenue</h3>
                             <p>Track revenue growth and seasonal patterns for strategic planning</p>
-                            <button class="chart-expand-icon">📈</button>
+                            <button class="chart-expand-icon">+</button>
                         </div>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
@@ -1439,18 +1307,7 @@
                             <button class="btn-outline" onclick="showIngredientsList()">View Inventory</button>
                         </div>
                         
-                        <!-- Search bar for inventory view -->
-                        <div class="search-container" style="margin-top: 1rem;">
-                            <div class="search-box">
-                                <input type="text" id="inventory-search" placeholder="Search ingredients..." onkeyup="filterInventoryContent(this.value)">
-                                <button type="button" class="search-btn">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.35-4.35"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div style="background: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius-large); box-shadow: var(--shadow-light); border: 1px solid var(--border-color); border-left: 4px solid var(--primary-color);">
@@ -1500,14 +1357,7 @@
                     <div style="background: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius-large); box-shadow: var(--shadow-light); border: 1px solid var(--border-color);">
                         <h3 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 1.125rem; font-weight: 600;">Restaurant Settings</h3>
                         
-                        <div style="margin-bottom: 1.25rem;">
-                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">Language / Idioma / 语言</label>
-                            <div class="language-selector">
-                                <div class="language-flag en" id="lang-en" onclick="changeLanguage('en')" title="English"></div>
-                                <div class="language-flag es" id="lang-es" onclick="changeLanguage('es')" title="Español"></div>
-                                <div class="language-flag zh" id="lang-zh" onclick="changeLanguage('zh')" title="中文"></div>
-                            </div>
-                        </div>
+
                         
                         <div style="margin-bottom: 1.25rem;">
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">Restaurant Name</label>
@@ -2408,13 +2258,15 @@
             const searchTerm = query.toLowerCase().trim();
             
             // Filter inventory cards
-            const inventoryCards = document.querySelectorAll('.inventory-info-card');
+            const inventoryCards = document.querySelectorAll('.inventory-card');
             inventoryCards.forEach(card => {
                 const cardText = card.textContent.toLowerCase();
                 const isVisible = searchTerm === '' || cardText.includes(searchTerm);
                 card.style.display = isVisible ? 'block' : 'none';
             });
         }
+
+
 
         // Utility functions for data management and user interaction
         /**
