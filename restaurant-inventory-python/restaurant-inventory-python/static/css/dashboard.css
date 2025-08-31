@@ -407,17 +407,17 @@ button:hover {
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--orange-color);
     color: white;
 }
 
 .btn-secondary {
-    background: var(--secondary-color);
+    background: var(--orange-color);
     color: white;
 }
 
 .btn-accent {
-    background: var(--accent-color);
+    background: var(--orange-color);
     color: white;
 }
 
@@ -830,7 +830,7 @@ input:focus, select:focus, textarea:focus {
 .category-badge {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    background: var(--secondary-color);
+    background: var(--dark-color);
     color: white;
     border-radius: var(--border-radius-small);
     font-size: 0.75rem;
@@ -842,7 +842,7 @@ input:focus, select:focus, textarea:focus {
 .supplier-badge {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    background: var(--orange-color);
+    background: var(--dark-color);
     color: white;
     border-radius: var(--border-radius-small);
     font-size: 0.75rem;
