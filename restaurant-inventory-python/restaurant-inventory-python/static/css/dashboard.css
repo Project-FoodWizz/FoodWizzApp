@@ -774,7 +774,7 @@ input:focus, select:focus, textarea:focus {
 .expanded-chart h4 {
     margin: 0 0 0.75rem 0;
     font-size: 0.875rem;
-    color: var(--text-primary);
+    color: var(--border-color);
     text-align: center;
 }
 
