@@ -81,6 +81,41 @@
         <!-- Dynamic content will be loaded here based on selected navigation tab -->
     </div>
 
+    <!-- Shopping Cart -->
+    <div class="shopping-cart" id="shopping-cart">
+        <div class="cart-header">
+            <h3 id="cart-title">Shopping Cart</h3>
+            <button class="cart-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <div class="cart-total-row">
+                <span>Subtotal:</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <div class="cart-total-row">
+                <span>Tax (8%):</span>
+                <span id="cart-tax">$0.00</span>
+            </div>
+            <div class="cart-total-row final">
+                <span>Total:</span>
+                <span id="cart-total-amount">$0.00</span>
+            </div>
+        </div>
+        <div class="cart-actions">
+            <button class="btn-outline" onclick="clearCart()">Clear Cart</button>
+            <button class="btn-primary" onclick="finalizeOrder()">Finalize Order</button>
+        </div>
+    </div>
+
+    <!-- Cart Toggle Button -->
+    <button class="cart-toggle" onclick="toggleCart()">
+        🛒
+        <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+
     <!-- Main JavaScript application logic -->
     <script>
         // Global application state variables
@@ -89,12 +124,298 @@
         let dishes = [];              // Array to store all dish/menu data
         let distributors = [];        // Array to store supplier/distributor information
         let chartsInitialized = false; // Flag to prevent duplicate chart initialization
+        
+        // Shopping cart state
+        let cart = [];
+        let cartTotal = 0;
+        
+        // Language support
+        let currentLanguage = 'en';
+        const translations = {
+            en: {
+                // Dashboard
+                'dashboard': 'Dashboard',
+                'dishes': 'Dishes',
+                'reports': 'Reports',
+                'alerts': 'Alerts',
+                'settings': 'Settings',
+                'total_ingredients': 'Total Ingredients',
+                'menu_items': 'Menu Items',
+                'low_stock_items': 'Low Stock Items',
+                'out_of_stock': 'Out of Stock',
+                'quick_actions': 'Quick Actions',
+                'add_ingredient': 'Add Ingredient',
+                'edit_ingredient': 'Edit Ingredient',
+                'export_data': 'Export Data',
+                'view_distributors': 'View Distributors',
+                'featured_products': 'Featured Products',
+                'inventory_overview': 'Inventory Overview',
+                'inventory_value': 'Inventory Value',
+                'top_selling_dishes': 'Top Selling Dishes',
+                'shopping_cart': 'Shopping Cart',
+                'clear_cart': 'Clear Cart',
+                'finalize_order': 'Finalize Order',
+                'subtotal': 'Subtotal',
+                'tax': 'Tax (8%)',
+                'total': 'Total',
+                'search_ingredients': 'Search ingredients, dishes, or suppliers...',
+                'search_dishes': 'Search dishes by name, category, or ingredients...'
+            },
+            es: {
+                // Dashboard
+                'dashboard': 'Panel Principal',
+                'dishes': 'Platos',
+                'reports': 'Reportes',
+                'alerts': 'Alertas',
+                'settings': 'Configuración',
+                'total_ingredients': 'Total Ingredientes',
+                'menu_items': 'Elementos del Menú',
+                'low_stock_items': 'Artículos Bajos en Stock',
+                'out_of_stock': 'Sin Stock',
+                'quick_actions': 'Acciones Rápidas',
+                'add_ingredient': 'Agregar Ingrediente',
+                'edit_ingredient': 'Editar Ingrediente',
+                'export_data': 'Exportar Datos',
+                'view_distributors': 'Ver Distribuidores',
+                'featured_products': 'Productos Destacados',
+                'inventory_overview': 'Vista General del Inventario',
+                'inventory_value': 'Valor del Inventario',
+                'top_selling_dishes': 'Platos Más Vendidos',
+                'shopping_cart': 'Carrito de Compras',
+                'clear_cart': 'Limpiar Carrito',
+                'finalize_order': 'Finalizar Pedido',
+                'subtotal': 'Subtotal',
+                'tax': 'Impuesto (8%)',
+                'total': 'Total',
+                'search_ingredients': 'Buscar ingredientes, platos o proveedores...',
+                'search_dishes': 'Buscar platos por nombre, categoría o ingredientes...'
+            },
+            zh: {
+                // Dashboard
+                'dashboard': '仪表板',
+                'dishes': '菜品',
+                'reports': '报告',
+                'alerts': '警报',
+                'settings': '设置',
+                'total_ingredients': '总配料',
+                'menu_items': '菜单项目',
+                'low_stock_items': '低库存项目',
+                'out_of_stock': '缺货',
+                'quick_actions': '快速操作',
+                'add_ingredient': '添加配料',
+                'edit_ingredient': '编辑配料',
+                'export_data': '导出数据',
+                'view_distributors': '查看分销商',
+                'featured_products': '特色产品',
+                'inventory_overview': '库存概览',
+                'inventory_value': '库存价值',
+                'top_selling_dishes': '最畅销菜品',
+                'shopping_cart': '购物车',
+                'clear_cart': '清空购物车',
+                'finalize_order': '完成订单',
+                'subtotal': '小计',
+                'tax': '税 (8%)',
+                'total': '总计',
+                'search_ingredients': '搜索配料、菜品或供应商...',
+                'search_dishes': '按名称、类别或配料搜索菜品...'
+            }
+        };
 
         // Application initialization - runs when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Load saved language preference
+            const savedLanguage = localStorage.getItem('foodwizz-language');
+            if (savedLanguage && translations[savedLanguage]) {
+                currentLanguage = savedLanguage;
+            }
+            
             loadUserInfo();           // Load and display user information
             showContent(0);           // Show dashboard by default
+            updateLanguage();         // Apply current language
+            
+            // Set initial active language flag
+            document.getElementById(`lang-${currentLanguage}`).classList.add('active');
         });
+
+        /**
+         * Changes the application language and updates all text
+         * @param {string} lang - Language code (en, es, zh)
+         */
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('foodwizz-language', lang);
+            
+            // Update language flag active states
+            document.querySelectorAll('.language-flag').forEach(flag => {
+                flag.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+            
+            updateLanguage();
+        }
+
+        /**
+         * Updates all text in the application to the current language
+         */
+        function updateLanguage() {
+            // Update navigation
+            const navButtons = document.querySelectorAll('.main-nav button');
+            if (navButtons.length >= 5) {
+                navButtons[0].textContent = translations[currentLanguage].dashboard;
+                navButtons[1].textContent = translations[currentLanguage].dishes;
+                navButtons[2].textContent = translations[currentLanguage].reports;
+                navButtons[3].textContent = translations[currentLanguage].alerts;
+                navButtons[4].textContent = translations[currentLanguage].settings;
+            }
+
+            // Update cart
+            document.getElementById('cart-title').textContent = translations[currentLanguage].shopping_cart;
+            document.querySelector('.cart-actions .btn-outline').textContent = translations[currentLanguage].clear_cart;
+            document.querySelector('.cart-actions .btn-primary').textContent = translations[currentLanguage].finalize_order;
+            document.querySelector('.cart-total-row:nth-child(1) span:first-child').textContent = translations[currentLanguage].subtotal;
+            document.querySelector('.cart-total-row:nth-child(2) span:first-child').textContent = translations[currentLanguage].tax;
+            document.querySelector('.cart-total-row.final span:first-child').textContent = translations[currentLanguage].total;
+
+            // Update search placeholders
+            const dashboardSearch = document.getElementById('dashboard-search');
+            const dishesSearch = document.getElementById('dishes-search');
+            if (dashboardSearch) dashboardSearch.placeholder = translations[currentLanguage].search_ingredients;
+            if (dishesSearch) dishesSearch.placeholder = translations[currentLanguage].search_dishes;
+        }
+
+        /**
+         * Toggles the shopping cart visibility
+         */
+        function toggleCart() {
+            const cart = document.getElementById('shopping-cart');
+            cart.style.display = cart.style.display === 'none' ? 'block' : 'none';
+        }
+
+        /**
+         * Adds a dish to the shopping cart
+         * @param {Object} dish - Dish object to add
+         */
+        function addToCart(dish) {
+            const existingItem = cart.find(item => item.id === dish.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: dish.id,
+                    name: dish.name,
+                    price: dish.sale_price,
+                    quantity: 1,
+                    image: dish.image_url
+                });
+            }
+            
+            updateCart();
+            showNotification(`${dish.name} added to cart`, 'success');
+        }
+
+        /**
+         * Updates the shopping cart display and totals
+         */
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartBadge = document.getElementById('cart-badge');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            const cartTax = document.getElementById('cart-tax');
+            const cartTotal = document.getElementById('cart-total-amount');
+            
+            // Update cart items
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` : item.name.charAt(0)}
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update totals
+            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = cartTotal * 0.08;
+            const total = cartTotal + tax;
+            
+            cartBadge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartSubtotal.textContent = `$${cartTotal.toFixed(2)}`;
+            cartTax.textContent = `$${tax.toFixed(2)}`;
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        /**
+         * Updates the quantity of an item in the cart
+         * @param {number} id - Item ID
+         * @param {number} change - Quantity change (+1 or -1)
+         */
+        function updateQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== id);
+                }
+                updateCart();
+            }
+        }
+
+        /**
+         * Clears all items from the shopping cart
+         */
+        function clearCart() {
+            cart = [];
+            updateCart();
+            showNotification('Cart cleared', 'success');
+        }
+
+        /**
+         * Finalizes the order and clears the cart
+         */
+        function finalizeOrder() {
+            if (cart.length === 0) {
+                showNotification('Cart is empty', 'warning');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = total * 0.08;
+            const finalTotal = total + tax;
+            
+            showNotification(`Order finalized! Total: $${finalTotal.toFixed(2)}`, 'success');
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        /**
+         * Previews the selected image file
+         * @param {HTMLInputElement} input - File input element
+         */
+        function previewImage(input) {
+            const preview = document.getElementById('image-preview');
+            const file = input.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
 
         /**
          * Loads and displays user information in the header
@@ -593,8 +914,12 @@
                 </div>
                 
                 <div class="dashboard-charts">
-                    <div class="chart-card">
-                        <h3>Sales Performance</h3>
+                    <div class="chart-card" onclick="toggleChartExpansion(this, 'sales')">
+                        <div class="chart-header">
+                            <h3>Sales Performance</h3>
+                            <p>Track daily, weekly, and monthly sales trends to optimize business performance</p>
+                            <button class="chart-expand-icon">📊</button>
+                        </div>
                         <div class="chart-container">
                             <canvas id="salesChart"></canvas>
                         </div>
@@ -612,21 +937,73 @@
                                 <span style="display: block; font-size: 1.125rem; font-weight: 700; color: var(--text-primary);">$79.81</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="chart-card">
-                        <h3>Top Selling Dishes</h3>
-                        <div class="chart-container">
-                            <canvas id="dishesChart"></canvas>
+                        <div class="expanded-charts" id="sales-expanded">
+                            <div class="expanded-chart">
+                                <h4>Daily</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="salesDailyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Weekly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="salesWeeklyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Monthly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="salesMonthlyChart"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="chart-card">
-                        <h3>Profit Analysis</h3>
+                    <div class="chart-card" onclick="toggleChartExpansion(this, 'dishes')">
+                        <div class="chart-header">
+                            <h3>Top Selling Dishes</h3>
+                            <p>Analyze dish popularity and performance across different time periods</p>
+                            <button class="chart-expand-icon">🍽️</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="dishesChart"></canvas>
+                        </div>
+                        <div class="expanded-charts" id="dishes-expanded">
+                            <div class="expanded-chart">
+                                <h4>Daily</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="dishesDailyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Weekly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="dishesWeeklyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Monthly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="dishesMonthlyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card" onclick="toggleChartExpansion(this, 'profit')">
+                        <div class="chart-header">
+                            <h3>Profit Analysis</h3>
+                            <p>Monitor profit margins and cost analysis for better financial planning</p>
+                            <button class="chart-expand-icon">💰</button>
+                        </div>
                         <div class="chart-container">
                             <canvas id="profitChart"></canvas>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+                            <div style="text-align: center; padding: 0.75rem; background: var(--background-color); border-radius: var(--border-radius); border: 1px solid var(--border-color);">
+                                <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-weight: 500;">Cost of Goods</span>
+                                <span style="display: block; font-size: 1.125rem; font-weight: 700; color: var(--orange-color);">$4,205</span>
+                            </div>
                             <div style="text-align: center; padding: 0.75rem; background: var(--background-color); border-radius: var(--border-radius); border: 1px solid var(--border-color);">
                                 <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-weight: 500;">Gross Profit</span>
                                 <span style="display: block; font-size: 1.125rem; font-weight: 700; color: var(--success-color);">$8,245</span>
@@ -635,31 +1012,58 @@
                                 <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-weight: 500;">Profit Margin</span>
                                 <span style="display: block; font-size: 1.125rem; font-weight: 700; color: var(--success-color);">66.2%</span>
                             </div>
-                            <div style="text-align: center; padding: 0.75rem; background: var(--background-color); border-radius: var(--border-radius); border: 1px solid var(--border-color);">
-                                <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-weight: 500;">Cost of Goods</span>
-                                <span style="display: block; font-size: 1.125rem; font-weight: 700; color: var(--text-primary);">$4,205</span>
+                        </div>
+                        <div class="expanded-charts" id="profit-expanded">
+                            <div class="expanded-chart">
+                                <h4>Daily</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="profitDailyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Weekly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="profitWeeklyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Monthly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="profitMonthlyChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="chart-card">
-                        <h3>Inventory Trends</h3>
-                        <div class="chart-container">
-                            <canvas id="inventoryChart"></canvas>
+                    <div class="chart-card" onclick="toggleChartExpansion(this, 'revenue')">
+                        <div class="chart-header">
+                            <h3>Monthly Revenue</h3>
+                            <p>Track revenue growth and seasonal patterns for strategic planning</p>
+                            <button class="chart-expand-icon">📈</button>
                         </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <h3>Category Distribution</h3>
-                        <div class="chart-container">
-                            <canvas id="categoryChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <h3>Monthly Revenue</h3>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="expanded-charts" id="revenue-expanded">
+                            <div class="expanded-chart">
+                                <h4>Daily</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="revenueDailyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Weekly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="revenueWeeklyChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="expanded-chart">
+                                <h4>Monthly</h4>
+                                <div class="expanded-chart-container">
+                                    <canvas id="revenueMonthlyChart"></canvas>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -671,8 +1075,6 @@
                     createSalesChart();
                     createDishesChart();
                     createProfitChart();
-                    createInventoryChart();
-                    createCategoryChart();
                     createRevenueChart();
                     chartsInitialized = true;
                 } catch (error) {
@@ -821,92 +1223,9 @@
             }
         }
 
-        function createInventoryChart() {
-            const ctx = document.getElementById('inventoryChart');
-            if (!ctx) return;
 
-            try {
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                        datasets: [{
-                            label: 'Inventory Value',
-                            data: [15000, 14200, 13800, 16500],
-                            borderColor: '#85AAAA',
-                            backgroundColor: 'rgba(133, 170, 170, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return '$' + value;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                ctx.parentElement.innerHTML = '<div class="no-data-placeholder"><img src="images/report_chart.png" alt="No data"><p>No data available</p></div>';
-            }
-        }
 
-        function createCategoryChart() {
-            const ctx = document.getElementById('categoryChart');
-            if (!ctx) return;
-
-            try {
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Meat', 'Vegetables', 'Dairy', 'Bread', 'Condiments', 'Beverages'],
-                        datasets: [{
-                            data: [35, 20, 15, 12, 10, 8],
-                            backgroundColor: [
-                                '#DDAA00',
-                                '#85AAAA',
-                                '#606C38',
-                                '#FF7F0D',
-                                '#173F4E',
-                                '#FEFAE0'
-                            ],
-                            borderWidth: 2,
-                            borderColor: '#FFFFFF'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    padding: 20,
-                                    usePointStyle: true
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                ctx.parentElement.innerHTML = '<div class="no-data-placeholder"><img src="images/report_chart.png" alt="No data"><p>No data available</p></div>';
-            }
-        }
-
-        function createRevenueChart() {
+                function createRevenueChart() {
             const ctx = document.getElementById('revenueChart');
             if (!ctx) return;
 
@@ -945,6 +1264,128 @@
                 });
             } catch (error) {
                 ctx.parentElement.innerHTML = '<div class="no-data-placeholder"><img src="images/report_chart.png" alt="No data"><p>No data available</p></div>';
+            }
+        }
+
+        /**
+         * Toggles chart expansion to show detailed daily, weekly, and monthly views
+         * @param {HTMLElement} chartCard - The chart card element to expand
+         * @param {string} chartType - Type of chart (sales, dishes, profit, revenue)
+         */
+        function toggleChartExpansion(chartCard, chartType) {
+            const expandedCharts = chartCard.querySelector('.expanded-charts');
+            const isExpanded = chartCard.classList.contains('expanded');
+            
+            // Collapse all other charts first
+            document.querySelectorAll('.chart-card').forEach(card => {
+                card.classList.remove('expanded');
+                card.querySelector('.expanded-charts').classList.remove('show');
+            });
+            
+            // Toggle current chart
+            if (!isExpanded) {
+                chartCard.classList.add('expanded');
+                expandedCharts.classList.add('show');
+                
+                // Create detailed charts if not already created
+                createDetailedCharts(chartType);
+            }
+        }
+
+        /**
+         * Creates detailed daily, weekly, and monthly charts for expanded view
+         * @param {string} chartType - Type of chart to create detailed views for
+         */
+        function createDetailedCharts(chartType) {
+            const chartData = {
+                sales: {
+                    daily: [1200, 1900, 1500, 2100, 1800, 2400, 2200],
+                    weekly: [8500, 9200, 8800, 9500],
+                    monthly: [12000, 15000, 13500, 18000, 16500, 20000]
+                },
+                dishes: {
+                    daily: [45, 38, 32, 28, 25, 42, 35],
+                    weekly: [180, 165, 175, 190],
+                    monthly: [1200, 1500, 1350, 1800, 1650, 2000]
+                },
+                profit: {
+                    daily: [800, 1200, 950, 1400, 1150, 1600, 1450],
+                    weekly: [6000, 6800, 6400, 7200],
+                    monthly: [8000, 10000, 9000, 12000, 11000, 13500]
+                },
+                revenue: {
+                    daily: [1200, 1900, 1500, 2100, 1800, 2400, 2200],
+                    weekly: [8500, 9200, 8800, 9500],
+                    monthly: [12000, 15000, 13500, 18000, 16500, 20000]
+                }
+            };
+
+            const data = chartData[chartType];
+            if (!data) return;
+
+            // Create daily chart
+            createDetailedChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
+            // Create weekly chart
+            createDetailedChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
+            // Create monthly chart
+            createDetailedChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+        }
+
+        /**
+         * Creates a detailed chart for expanded view
+         * @param {string} canvasId - ID of the canvas element
+         * @param {Array} data - Data array for the chart
+         * @param {string} period - Time period (Daily, Weekly, Monthly)
+         * @param {string} type - Chart type
+         */
+        function createDetailedChart(canvasId, data, period, type) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+
+            try {
+                const labels = period === 'Daily' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] :
+                              period === 'Weekly' ? ['Week 1', 'Week 2', 'Week 3', 'Week 4'] :
+                              ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: period,
+                            data: data,
+                            borderColor: type === 'sales' ? '#DDAA00' : 
+                                        type === 'dishes' ? '#85AAAA' : 
+                                        type === 'profit' ? '#606C38' : '#FF7F0D',
+                            backgroundColor: type === 'sales' ? 'rgba(221, 170, 0, 0.1)' : 
+                                           type === 'dishes' ? 'rgba(133, 170, 170, 0.1)' : 
+                                           type === 'profit' ? 'rgba(96, 108, 56, 0.1)' : 'rgba(255, 127, 13, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return type === 'dishes' ? value : '$' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error(`Error creating ${canvasId}:`, error);
             }
         }
 
@@ -997,6 +1438,19 @@
                         <div style="display: flex; gap: 0.5rem;">
                             <button class="btn-outline" onclick="showIngredientsList()">View Inventory</button>
                         </div>
+                        
+                        <!-- Search bar for inventory view -->
+                        <div class="search-container" style="margin-top: 1rem;">
+                            <div class="search-box">
+                                <input type="text" id="inventory-search" placeholder="Search ingredients..." onkeyup="filterInventoryContent(this.value)">
+                                <button type="button" class="search-btn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="background: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius-large); box-shadow: var(--shadow-light); border: 1px solid var(--border-color); border-left: 4px solid var(--primary-color);">
@@ -1045,6 +1499,16 @@
                     
                     <div style="background: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius-large); box-shadow: var(--shadow-light); border: 1px solid var(--border-color);">
                         <h3 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 1.125rem; font-weight: 600;">Restaurant Settings</h3>
+                        
+                        <div style="margin-bottom: 1.25rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">Language / Idioma / 语言</label>
+                            <div class="language-selector">
+                                <div class="language-flag en" id="lang-en" onclick="changeLanguage('en')" title="English"></div>
+                                <div class="language-flag es" id="lang-es" onclick="changeLanguage('es')" title="Español"></div>
+                                <div class="language-flag zh" id="lang-zh" onclick="changeLanguage('zh')" title="中文"></div>
+                            </div>
+                        </div>
+                        
                         <div style="margin-bottom: 1.25rem;">
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">Restaurant Name</label>
                             <input type="text" value="Foodwizz Food Truck">
@@ -1193,7 +1657,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Image File (optional)</label>
-                                <input type="file" name="image_file" accept="image/*">
+                                <div class="file-upload-container">
+                                    <input type="file" name="image_file" accept="image/*" class="file-upload-input" onchange="previewImage(this)">
+                                    <label class="file-upload-label">
+                                        <div class="file-upload-icon">📷</div>
+                                        <div class="file-upload-text">Click to upload image</div>
+                                        <div class="file-upload-hint">JPG, PNG, GIF up to 5MB</div>
+                                    </label>
+                                </div>
+                                <div class="file-upload-preview" id="image-preview"></div>
                             </div>
                             <div class="form-actions">
                                 <button type="button" onclick="closeModal()" class="btn-outline">Cancel</button>
@@ -1404,7 +1876,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Image file (optional)</label>
-                                    <input type="file" name="image_file" accept="image/*">
+                                    <div class="file-upload-container">
+                                        <input type="file" name="image_file" accept="image/*" class="file-upload-input" onchange="previewImage(this)">
+                                        <label class="file-upload-label">
+                                            <div class="file-upload-icon">📷</div>
+                                            <div class="file-upload-text">Click to upload image</div>
+                                            <div class="file-upload-hint">JPG, PNG, GIF up to 5MB</div>
+                                        </label>
+                                    </div>
+                                    <div class="file-upload-preview" id="image-preview"></div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1820,32 +2300,22 @@
         }
 
         /**
-         * Prepares a dish by consuming ingredients from inventory
-         * Sends POST request to API to process dish preparation
-         * Updates inventory levels and creates order record
-         * Shows success/error notifications and refreshes views
-         * @param {number} id - ID of the dish to prepare
+         * Adds a dish to the shopping cart for order preparation
+         * @param {number} id - ID of the dish to add to cart
          */
         async function prepareDish(id) {
-            // Ask for user confirmation before preparation
-            if (confirm('Prepare this dish? This will consume ingredients from inventory and create an order.')) {
-                try {
-                    const response = await fetch(`/api/dishes/${id}/prepare`, {
-                        method: 'POST'
-                    });
-
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        showNotification(result.message, 'success');
-                        if (currentTab === 0) renderDashboard();
-                        if (currentTab === 1) renderDishes();
-                    } else {
-                        showNotification(result.message, 'error');
-                    }
-                } catch (error) {
-                    showNotification('Connection error', 'error');
+            try {
+                const response = await fetch('/api/dishes');
+                const dishes = await response.json();
+                const dish = dishes.find(d => d.id === id);
+                
+                if (dish) {
+                    addToCart(dish);
+                } else {
+                    showNotification('Dish not found', 'error');
                 }
+            } catch (error) {
+                showNotification('Error adding dish to cart', 'error');
             }
         }
 
@@ -1927,6 +2397,23 @@
             if (countDisplay) {
                 countDisplay.textContent = `Restaurant Menu (${visibleDishes.length} dishes)`;
             }
+        }
+
+        /**
+         * Filters inventory content based on search query
+         * Searches through ingredient names, categories, and suppliers
+         * @param {string} query - Search term entered by user
+         */
+        function filterInventoryContent(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            // Filter inventory cards
+            const inventoryCards = document.querySelectorAll('.inventory-info-card');
+            inventoryCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const isVisible = searchTerm === '' || cardText.includes(searchTerm);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
         }
 
         // Utility functions for data management and user interaction
