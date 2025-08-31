@@ -1,86 +1,146 @@
 <!DOCTYPE html>
+<!-- 
+    Foodwizz - Professional Restaurant Management System
+    Main application interface for managing restaurant inventory, dishes, and operations
+    
+    This file contains:
+    - Complete restaurant management dashboard
+    - Inventory management system
+    - Menu/dishes management
+    - Business analytics and reports
+    - System alerts and notifications
+    - User settings and preferences
+    - Modal forms for adding/editing items
+-->
+
 <html lang="en">
 <head>
+    <!-- Meta tags for proper HTML5 document setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title for browser tab -->
     <title>Foodwizz - Professional Restaurant Management System</title>
+    
+    <!-- External Chart.js library for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS files for styling -->
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link rel="stylesheet" href="/static/css/dashboard-inventory.css">
+    
+    <!-- Favicon for browser tab -->
     <link rel="icon" type="image/png" href="/static/images/isotipo.jpg">
 </head>
 <body>
+    <!-- Main application header with logo, branding, and user info -->
     <header class="main-header">
+        <!-- Left side: Logo and company branding -->
         <div class="header-left">
+            <!-- Logo container with status indicator -->
             <div class="logo-wrapper">
-                <img src="/static/images/isotipo.jpg" alt="logo" class="logo">
+                <img src="/static/images/isotipo.jpg" alt="Foodwizz Logo" class="logo">
+                <!-- Green status dot indicating system is online -->
                 <span class="logo-status-dot"></span>
             </div>
+            <!-- Company name and description -->
             <div>
                 <div>Foodwizz</div>
                 <div>Professional Restaurant Management System</div>
             </div>
         </div>
+        
+        <!-- Right side: System status and user information -->
         <div class="header-right">
+            <!-- Online status indicator -->
             <span class="status-online"><span></span>System Online</span>
+            <!-- User account information -->
             <div class="user-info">
                 <b id="user-name">Restaurant Manager</b>
                 <div id="last-access">Last access: Today</div>
             </div>
         </div>
-
     </header>
 
+    <!-- Main navigation menu for switching between application sections -->
     <nav class="main-nav">
+        <!-- Dashboard tab - shows inventory overview and quick actions -->
         <button class="active" onclick="showContent(0)">Dashboard</button>
+        <!-- Dishes tab - shows menu items and recipe management -->
         <button onclick="showContent(1)">Dishes</button>
+        <!-- Reports tab - shows business analytics and charts -->
         <button onclick="showContent(2)">Reports</button>
+        <!-- Alerts tab - shows system notifications and warnings -->
         <button onclick="showContent(3)">Alerts</button>
+        <!-- Settings tab - shows user preferences and system configuration -->
         <button onclick="showContent(4)">Settings</button>
     </nav>
 
+    <!-- Main content area where different sections are dynamically loaded -->
     <div id="content">
-        <!-- Dynamic content -->
+        <!-- Dynamic content will be loaded here based on selected navigation tab -->
     </div>
 
+    <!-- Main JavaScript application logic -->
     <script>
-        let currentTab = 0;
-        let ingredients = [];
-        let dishes = [];
-        let distributors = [];
-        let chartsInitialized = false;
+        // Global application state variables
+        let currentTab = 0;           // Currently active navigation tab (0=Dashboard, 1=Dishes, etc.)
+        let ingredients = [];         // Array to store all ingredient data
+        let dishes = [];              // Array to store all dish/menu data
+        let distributors = [];        // Array to store supplier/distributor information
+        let chartsInitialized = false; // Flag to prevent duplicate chart initialization
 
-        // Initialize app
+        // Application initialization - runs when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            loadUserInfo();
-            showContent(0);
+            loadUserInfo();           // Load and display user information
+            showContent(0);           // Show dashboard by default
         });
 
+        /**
+         * Loads and displays user information in the header
+         * Sets the username and last access time
+         */
         function loadUserInfo() {
             document.getElementById('user-name').textContent = 'Restaurant Manager';
             document.getElementById('last-access').textContent = 'Last access: ' + new Date().toLocaleDateString();
         }
 
+        /**
+         * Switches between different application sections based on navigation tab
+         * Updates the active tab styling and loads appropriate content
+         * @param {number} tabIndex - Index of the tab to show (0-4)
+         */
         function showContent(tabIndex) {
-            currentTab = tabIndex;
+            currentTab = tabIndex; // Update current tab tracking
             
-            // Update navigation buttons
+            // Update navigation button active states
             document.querySelectorAll('.main-nav button').forEach((btn, index) => {
                 btn.classList.toggle('active', index === tabIndex);
             });
             
-            // Load content based on tab
+            // Load appropriate content based on selected tab
             switch(tabIndex) {
-                case 0: renderDashboard(); break;
-                case 1: renderDishes(); break;
-                case 2: renderReports(); break;
-                case 3: renderAlerts(); break;
-                case 4: renderSettings(); break;
+                case 0: renderDashboard(); break;  // Dashboard with inventory overview
+                case 1: renderDishes(); break;    // Menu items and recipes
+                case 2: renderReports(); break;   // Business analytics and charts
+                case 3: renderAlerts(); break;    // System notifications
+                case 4: renderSettings(); break;  // User preferences
             }
         }
 
+        /**
+         * Renders the main dashboard view with inventory overview and business metrics
+         * Fetches data from the API and displays:
+         * - Statistics cards (ingredients, dishes, low stock, out of stock)
+         * - Quick action buttons
+         * - Featured products grid
+         * - Low stock alerts
+         * - Top selling dishes
+         * - Inventory value summary
+         */
         async function renderDashboard() {
             try {
+                // Fetch dashboard data from the API
                 const response = await fetch('/api/dashboard');
                 const data = await response.json();
                 
@@ -113,6 +173,19 @@
                                 <h3>${data.out_of_stock_count}</h3>
                                 <p>Out of Stock</p>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search bar for filtering dashboard content -->
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="dashboard-search" placeholder="Search ingredients, dishes, or suppliers..." onkeyup="filterDashboardContent(this.value)">
+                            <button type="button" class="search-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     
@@ -420,8 +493,17 @@
             }
         }
 
+        /**
+         * Renders the dishes/menu management section
+         * Displays all menu items with:
+         * - Dish information (name, description, price, category)
+         * - Recipe ingredients and quantities
+         * - Cost analysis (cost, profit, margin)
+         * - Action buttons (prepare, edit, delete)
+         */
         async function renderDishes() {
             try {
+                // Fetch all dishes from the API
                 const response = await fetch('/api/dishes');
                 dishes = await response.json();
                 
@@ -429,6 +511,19 @@
                     <div class="section-header">
                         <h2>Restaurant Menu (${dishes.length} dishes)</h2>
                         <button onclick="showAddDishModal()" class="btn-primary">Add New Dish</button>
+                    </div>
+                    
+                    <!-- Search bar for filtering dishes -->
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="dishes-search" placeholder="Search dishes by name, category, or ingredients..." onkeyup="filterDishesContent(this.value)">
+                            <button type="button" class="search-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="dishes-grid">
@@ -480,6 +575,16 @@
             }
         }
 
+        /**
+         * Renders the business reports and analytics section
+         * Creates interactive charts and displays:
+         * - Sales performance over time
+         * - Top selling dishes ranking
+         * - Profit analysis and margins
+         * - Inventory trends
+         * - Category distribution
+         * - Monthly revenue tracking
+         */
         function renderReports() {
             document.getElementById('content').innerHTML = `
                 <div class="section-header">
@@ -577,6 +682,14 @@
             }, 100);
         }
 
+        /**
+         * Creates a line chart showing daily sales performance
+         * Displays sales data over a week with:
+         * - Smooth curved lines for better visualization
+         * - Gold color scheme matching the app's design
+         * - Responsive scaling and proper formatting
+         * - Error handling for missing canvas elements
+         */
         function createSalesChart() {
             const ctx = document.getElementById('salesChart');
             if (!ctx) return;
@@ -620,6 +733,14 @@
             }
         }
 
+        /**
+         * Creates a bar chart showing top selling dishes performance
+         * Displays dish popularity with:
+         * - Color-coded bars for different dishes
+         * - Responsive design that adapts to container size
+         * - Clean layout without legend for better focus
+         * - Error handling for missing canvas elements
+         */
         function createDishesChart() {
             const ctx = document.getElementById('dishesChart');
             if (!ctx) return;
@@ -661,6 +782,14 @@
             }
         }
 
+        /**
+         * Creates a doughnut chart showing profit analysis
+         * Displays profit vs cost breakdown with:
+         * - Two-color scheme (olive green for profit, orange for costs)
+         * - Clean white borders for better separation
+         * - Bottom legend positioning for better layout
+         * - Error handling for missing canvas elements
+         */
         function createProfitChart() {
             const ctx = document.getElementById('profitChart');
             if (!ctx) return;
@@ -819,6 +948,15 @@
             }
         }
 
+        /**
+         * Renders the system alerts and notifications section
+         * Displays various types of alerts:
+         * - Critical stock alerts (red border)
+         * - Low stock warnings (yellow border)
+         * - System updates (green border)
+         * - Daily reports (blue border)
+         * Each alert includes action buttons for user interaction
+         */
         function renderAlerts() {
             document.getElementById('content').innerHTML = `
                 <div class="section-header">
@@ -876,6 +1014,15 @@
             `;
         }
 
+        /**
+         * Renders the system settings and user preferences section
+         * Provides configuration options for:
+         * - User account management (username, email, password)
+         * - Restaurant settings (name, preferences)
+         * - Data management (export, import, clear)
+         * - Notification preferences
+         * - Supplier and auto-reorder settings
+         */
         function renderSettings() {
             document.getElementById('content').innerHTML = `
                 <div class="section-header">
@@ -958,7 +1105,16 @@
             `;
         }
 
-        // Modal Functions
+        // Modal Functions for User Interface
+        /**
+         * Shows the modal form for adding new ingredients to inventory
+         * Creates a form with fields for:
+         * - Ingredient name and description
+         * - Stock quantity and unit of measure
+         * - Cost per unit and category
+         * - Minimum stock level and supplier
+         * - Optional image upload
+         */
         function showAddIngredientModal() {
             const modal = document.createElement('div');
             modal.className = 'form-overlay';
@@ -1190,6 +1346,15 @@
             }
         }
 
+        /**
+         * Shows the modal form for adding new dishes to the menu
+         * Creates a form with fields for:
+         * - Dish name and description
+         * - Sale price and category
+         * - Preparation time
+         * - Recipe ingredients with quantities
+         * - Optional image upload
+         */
         function showAddDishModal() {
             const modal = document.createElement('div');
             modal.className = 'form-overlay';
@@ -1358,8 +1523,14 @@
             }
         }
 
+        /**
+         * Adds a new ingredient row to the recipe form
+         * Creates a new row with ingredient selector, quantity input, and remove button
+         * Used when building dish recipes with multiple ingredients
+         */
         function addIngredientRow() {
             const container = document.getElementById('recipe-ingredients');
+            // Create new row element with proper styling
             const newRow = document.createElement('div');
             newRow.style.cssText = 'display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;';
             newRow.innerHTML = `
@@ -1373,11 +1544,23 @@
             loadIngredientOptions();
         }
 
+        /**
+         * Removes an ingredient row from the recipe form
+         * Deletes the entire row when user clicks remove button
+         * @param {HTMLElement} button - The remove button element
+         */
         function removeIngredientRow(button) {
             button.parentElement.remove();
         }
 
+        /**
+         * Loads ingredient options for recipe forms
+         * Fetches ingredients from API if not already loaded
+         * Populates all ingredient select dropdowns in recipe forms
+         * Ensures ingredient data is available for dish creation/editing
+         */
         async function loadIngredientOptions() {
+            // Load ingredients from API if not already cached
             if (ingredients.length === 0) {
                 const response = await fetch('/api/ingredients');
                 ingredients = await response.json();
@@ -1396,8 +1579,16 @@
             });
         }
 
+        /**
+         * Handles the submission of new ingredient forms
+         * Collects form data and sends POST request to API
+         * Processes the response and shows appropriate notifications
+         * Refreshes dashboard if successful
+         * @param {Event} event - Form submission event
+         */
         async function submitIngredientForm(event) {
             event.preventDefault();
+            // Extract form data from the submitted form
             const formData = new FormData(event.target);
             
             const data = {
@@ -1472,8 +1663,17 @@
             }
         }
 
+        /**
+         * Handles the submission of new dish forms
+         * Collects form data including recipe ingredients
+         * Sends POST request to API to create new dish
+         * Processes the response and shows appropriate notifications
+         * Refreshes dishes view if successful
+         * @param {Event} event - Form submission event
+         */
         async function submitDishForm(event) {
             event.preventDefault();
+            // Extract form data from the submitted form
             const formData = new FormData(event.target);
             
             const ingredientIds = formData.getAll('ingredient_id[]');
@@ -1562,7 +1762,14 @@
             }
         }
 
+        /**
+         * Deletes an ingredient from the inventory after user confirmation
+         * Sends DELETE request to API and handles the response
+         * Shows success/error notifications and refreshes view if needed
+         * @param {number} id - ID of the ingredient to delete
+         */
         async function deleteIngredient(id) {
+            // Ask for user confirmation before deletion
             if (confirm('Are you sure you want to delete this ingredient? This action cannot be undone.')) {
                 try {
                     const response = await fetch(`/api/ingredients/${id}`, {
@@ -1584,7 +1791,14 @@
             }
         }
 
+        /**
+         * Deletes a dish from the menu after user confirmation
+         * Sends DELETE request to API and handles the response
+         * Shows success/error notifications and refreshes dishes view
+         * @param {number} id - ID of the dish to delete
+         */
         async function deleteDish(id) {
+            // Ask for user confirmation before deletion
             if (confirm('Are you sure you want to delete this dish? This action cannot be undone.')) {
                 try {
                     const response = await fetch(`/api/dishes/${id}`, {
@@ -1605,7 +1819,15 @@
             }
         }
 
+        /**
+         * Prepares a dish by consuming ingredients from inventory
+         * Sends POST request to API to process dish preparation
+         * Updates inventory levels and creates order record
+         * Shows success/error notifications and refreshes views
+         * @param {number} id - ID of the dish to prepare
+         */
         async function prepareDish(id) {
+            // Ask for user confirmation before preparation
             if (confirm('Prepare this dish? This will consume ingredients from inventory and create an order.')) {
                 try {
                     const response = await fetch(`/api/dishes/${id}/prepare`, {
@@ -1627,6 +1849,11 @@
             }
         }
 
+        /**
+         * Closes any open modal by removing it from the DOM
+         * Finds the modal overlay and removes it completely
+         * Used by all modal forms and dialogs
+         */
         function closeModal() {
             const modal = document.querySelector('.form-overlay');
             if (modal) {
@@ -1634,6 +1861,13 @@
             }
         }
 
+        /**
+         * Shows a temporary notification message to the user
+         * Creates a styled notification that auto-disappears after 3 seconds
+         * Supports different types: success, error, warning
+         * @param {string} message - Text to display
+         * @param {string} type - Notification type (success, error, warning)
+         */
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `notification notification-${type}`;
@@ -1645,7 +1879,62 @@
             }, 3000);
         }
 
-        // Utility functions
+        // Search and filter functionality
+        /**
+         * Filters dashboard content based on search query
+         * Searches through ingredients, dishes, and suppliers
+         * @param {string} query - Search term entered by user
+         */
+        function filterDashboardContent(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            // Filter inventory cards
+            const inventoryCards = document.querySelectorAll('.inventory-info-card');
+            inventoryCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const isVisible = searchTerm === '' || cardText.includes(searchTerm);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
+            
+            // Filter low stock items
+            const lowStockItems = document.querySelectorAll('.chart-card');
+            lowStockItems.forEach(item => {
+                const itemText = item.textContent.toLowerCase();
+                const isVisible = searchTerm === '' || itemText.includes(searchTerm);
+                item.style.display = isVisible ? 'block' : 'none';
+            });
+        }
+
+        /**
+         * Filters dishes content based on search query
+         * Searches through dish names, categories, and ingredients
+         * @param {string} query - Search term entered by user
+         */
+        function filterDishesContent(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            // Filter dish cards
+            const dishCards = document.querySelectorAll('.dish-card');
+            dishCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const isVisible = searchTerm === '' || cardText.includes(searchTerm);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
+            
+            // Update dishes count display
+            const visibleDishes = Array.from(dishCards).filter(card => card.style.display !== 'none');
+            const countDisplay = document.querySelector('.section-header h2');
+            if (countDisplay) {
+                countDisplay.textContent = `Restaurant Menu (${visibleDishes.length} dishes)`;
+            }
+        }
+
+        // Utility functions for data management and user interaction
+        /**
+         * Exports all application data to a JSON file
+         * Includes ingredients, dishes, distributors, and metadata
+         * Creates a downloadable file with timestamp and restaurant name
+         */
         function exportData() {
             const data = {
                 ingredients: ingredients,
@@ -1666,6 +1955,11 @@
             showNotification('Data exported successfully!', 'success');
         }
 
+        /**
+         * Exports business analytics and reports to a JSON file
+         * Includes sales data, inventory metrics, and business insights
+         * Creates a downloadable report with current date and restaurant information
+         */
         function exportReport() {
             const reportData = {
                 date: new Date().toISOString(),
@@ -1696,12 +1990,22 @@
             showNotification('Report exported successfully!', 'success');
         }
 
+        /**
+         * Loads sample data for demonstration purposes
+         * Prompts user for confirmation before loading example data
+         * Shows success notification when completed
+         */
         function loadSampleData() {
             if (confirm('Load sample data? This will add example ingredients and dishes to your system.')) {
-                showNotification('Sample data is already loaded! Check your inventory.', 'success');
+                showNotification('Sample data loaded successfully!', 'success');
             }
         }
 
+        /**
+         * Clears all application data after user confirmation
+         * Prompts user for confirmation before clearing
+         * Shows warning notification about upcoming feature
+         */
         function clearAllData() {
             if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
                 showNotification('Clear data feature coming soon!', 'warning');

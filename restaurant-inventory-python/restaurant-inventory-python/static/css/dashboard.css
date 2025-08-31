@@ -22,6 +22,73 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Search Bar Styles */
+.search-container {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-large);
+    font-size: 1rem;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+.search-box input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+}
+
+.search-btn:hover {
+    background: var(--dark-color);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: var(--shadow-medium);
+}
+
+.search-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
 /* Reset and Base Configuration */
 * {
     margin: 0;
