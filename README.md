@@ -1,68 +1,65 @@
-# 🍽️ Foodwizz Inventory Management System
+# Foodwizz Inventory Management System
 
-## 📖 Descripción General
-**Foodwizz** es una aplicación de gestión de inventario diseñada para restaurantes y negocios de alimentos.  
-Su objetivo principal es **centralizar el control de ingredientes, platos del menú, reportes financieros y alertas de stock** en una sola plataforma web accesible y sencilla.
+## 📖 General Description
+**Foodwizz** is an inventory management application designed for restaurants and food businesses.  
+Its main goal is to **centralize the control of ingredients, menu dishes, financial reports, and stock alerts** in a single, simple, and accessible web platform.
 
-El sistema está desarrollado con **Flask** como framework principal para la web, complementado con **Python, HTML, JavaScript y CSS**, garantizando una interfaz amigable y un backend robusto.
-
----
-
-## 🚀 Funcionalidades Principales
-
-### 📊 Dashboard
-Panel principal donde se visualizan los ingredientes registrados, métricas clave del inventario y datos relevantes como la ganancia total.  
-Incluye accesos rápidos a información crítica y espacio para promociones o platos destacados.
-
-### 🍜 Dishes (Menú)
-Sección destinada a la gestión de recetas. Aquí se definen todos los platos del menú junto con sus precios y los ingredientes asociados.  
-Permite visualizar y actualizar fácilmente la oferta gastronómica.
-
-### 📈 Reports
-Área de reportes y estadísticas financieras.  
-Muestra indicadores clave como:
-- **Sales Performance** (rendimiento de ventas)
-- **Top Selling Dishes** (platos más vendidos)
-- **Profit Analysis** (análisis de ganancias)
-
-Con soporte para **exportación de datos** y **visualización en gráficos dinámicos**.
-
-### ⚠️ Alerts
-Sistema de notificaciones que advierte al usuario sobre:
-- Bajo stock de ingredientes  
-- Productos próximos a agotarse  
-- Situaciones críticas en el inventario  
-
-### ⚙️ Settings
-Espacio para la gestión de la cuenta del usuario, donde se configuran datos personales, credenciales y preferencias de la aplicación.
+The system is developed with **Flask** as the main web framework, complemented by **Python, HTML, JavaScript, and CSS**, ensuring a user-friendly interface and a robust backend.
 
 ---
 
-## 🛠️ Tecnologías y Librerías Utilizadas
+## Main Features
 
-- **HTML** → Estructura del contenido de la aplicación.  
-- **CSS** → Diseño visual y presentación de la interfaz.  
-- **Python** → Lógica del backend y conexión con la base de datos.  
-- **Java** → Usado en algunos módulos para gestión de procesos o integraciones adicionales.  
-- **JSON (.json)** → Intercambio de datos entre frontend y backend.  
-- **Base de datos** → **Firebase** 
+### Dashboard
+Main panel where registered ingredients, key inventory metrics, and relevant data such as total profit are displayed.  
+Includes quick access to critical information and space for promotions or featured dishes.
+
+### Dishes (Menu)
+Section for recipe management. All menu dishes are defined here, along with their prices and associated ingredients.  
+Allows for easy visualization and updates of the restaurant’s offerings.
+
+### Reports
+Area for reports and financial statistics.  
+Displays key indicators such as:
+- **Sales Performance**
+- **Top Selling Dishes**
+- **Profit Analysis**
+
+Supports **data export** and **dynamic chart visualization**.
+
+### Alerts
+Notification system that warns the user about:
+- Low ingredient stock  
+- Products about to run out  
+- Critical inventory situations  
+
+### Settings
+User account management area, where personal data, credentials, and application preferences can be configured.
 
 ---
 
-## 📚 Librerías Clave
+## Technologies and Tools Used
 
-- **Flask** → Framework ligero y flexible para la aplicación web.  
-- **FastAPI** → Creación de APIs rápidas y eficientes.  
-- **SQLAlchemy** → ORM para conexión con la base de datos.  
-- **Alembic** → Migraciones de base de datos.  
-- **PyMySQL** → Conector SQL desde Python.  
-- **Pandas** → Análisis y manipulación de datos (gestión de inventario).  
-- **Openpyxl** → Importación y exportación de datos en Excel.  
-- **Matplotlib** → Gráficos estadísticos y visualización de datos.  
-- **Pillow** → Manejo de imágenes (platos, ingredientes, promociones).  
-- **Pydantic** → Validación y gestión de datos.  
-- **PyInstaller** → Empaquetado en ejecutables para distribución.  
-- **Pluggy** → Sistema de plugins para extender funcionalidades.
-
+- **HTML** → Structure of the application content  
+- **CSS** → Visual design and interface presentation  
+- **Python** → Backend logic and database connection  
+- **Java** → Used in some modules for process management or additional integrations  
+- **JSON (.json)** → Data exchange between frontend and backend  
+- **Database** → **Firebase**  
 
 ---
+
+## Key Libraries
+
+- **Flask** → Lightweight and flexible web framework  
+- **FastAPI** → Creation of fast and efficient APIs  
+- **SQLAlchemy** → ORM for database connection  
+- **Alembic** → Database migrations  
+- **PyMySQL** → SQL connector for Python  
+- **Pandas** → Data analysis and manipulation (inventory management)  
+- **Openpyxl** → Import and export of Excel data  
+- **Matplotlib** → Statistical charts and data visualization  
+- **Pillow** → Image handling (dishes, ingredients, promotions)  
+- **Pydantic** → Data validation and management  
+- **PyInstaller** → Packaging into executables for distribution  
+- **Pluggy** → Plugin system to extend functionality  
