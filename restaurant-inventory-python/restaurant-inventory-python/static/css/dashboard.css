@@ -779,7 +779,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .chart-tab {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+    background: var(--primary-color);
     color: white;
     padding: 0.75rem;
     border-radius: var(--border-radius-small);
