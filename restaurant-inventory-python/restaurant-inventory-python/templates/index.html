@@ -127,7 +127,6 @@
         
         // Shopping cart state
         let cart = [];
-        let cartTotal = 0;
         
 
 
@@ -135,6 +134,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadUserInfo();           // Load and display user information
             showContent(0);           // Show dashboard by default
+            
+            // Initialize cart display
+            updateCart();
         });
 
 
@@ -160,7 +162,7 @@
                 cart.push({
                     id: dish.id,
                     name: dish.name,
-                    price: dish.sale_price,
+                    price: parseFloat(dish.sale_price) || 0,
                     quantity: 1,
                     image: dish.image_url
                 });
@@ -188,7 +190,7 @@
                     </div>
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
-                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-price">$${parseFloat(item.price).toFixed(2)}</div>
                     </div>
                     <div class="cart-item-quantity">
                         <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
@@ -198,13 +200,17 @@
                 </div>
             `).join('');
             
-            // Update totals
-            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = cartTotal * 0.07;
-            const total = cartTotal + tax;
+            // Calculate totals dynamically
+            const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+            const tax = subtotal * 0.07;
+            const total = subtotal + tax;
             
-            cartBadge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartSubtotal.textContent = `$${cartTotal.toFixed(2)}`;
+            // Update cart badge with exact item count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.textContent = totalItems;
+            
+            // Update totals display
+            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
             cartTax.textContent = `$${tax.toFixed(2)}`;
             cartTotal.textContent = `$${total.toFixed(2)}`;
         }
@@ -243,7 +249,7 @@
                 return;
             }
             
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
             const tax = total * 0.07;
             const finalTotal = total + tax;
             
@@ -807,19 +813,19 @@
                         </div>
                         <div class="expanded-charts" id="sales-expanded">
                             <div class="expanded-chart">
-                                <h4>Daily</h4>
+                                <h4 class="chart-tab">Daily</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="salesDailyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Weekly</h4>
+                                <h4 class="chart-tab">Weekly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="salesWeeklyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Monthly</h4>
+                                <h4 class="chart-tab">Monthly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="salesMonthlyChart"></canvas>
                                 </div>
@@ -838,19 +844,19 @@
                         </div>
                         <div class="expanded-charts" id="dishes-expanded">
                             <div class="expanded-chart">
-                                <h4>Daily</h4>
+                                <h4 class="chart-tab">Daily</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="dishesDailyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Weekly</h4>
+                                <h4 class="chart-tab">Weekly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="dishesWeeklyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Monthly</h4>
+                                <h4 class="chart-tab">Monthly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="dishesMonthlyChart"></canvas>
                                 </div>
@@ -883,19 +889,19 @@
                         </div>
                         <div class="expanded-charts" id="profit-expanded">
                             <div class="expanded-chart">
-                                <h4>Daily</h4>
+                                <h4 class="chart-tab">Daily</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="profitDailyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Weekly</h4>
+                                <h4 class="chart-tab">Weekly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="profitWeeklyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Monthly</h4>
+                                <h4 class="chart-tab">Monthly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="profitMonthlyChart"></canvas>
                                 </div>
@@ -914,23 +920,22 @@
                         </div>
                         <div class="expanded-charts" id="revenue-expanded">
                             <div class="expanded-chart">
-                                <h4>Daily</h4>
+                                <h4 class="chart-tab">Daily</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="revenueDailyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Weekly</h4>
+                                <h4 class="chart-tab">Weekly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="revenueWeeklyChart"></canvas>
                                 </div>
                             </div>
                             <div class="expanded-chart">
-                                <h4>Monthly</h4>
+                                <h4 class="chart-tab">Monthly</h4>
                                 <div class="expanded-chart-container">
                                     <canvas id="revenueMonthlyChart"></canvas>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -1191,22 +1196,34 @@
             const data = chartData[chartType];
             if (!data) return;
 
-            // Create daily chart
-            createDetailedChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
-            // Create weekly chart
-            createDetailedChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
-            // Create monthly chart
-            createDetailedChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+            // Create charts based on type
+            if (chartType === 'sales') {
+                createDetailedLineChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
+                createDetailedLineChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
+                createDetailedLineChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+            } else if (chartType === 'dishes') {
+                createDetailedBarChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
+                createDetailedBarChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
+                createDetailedBarChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+            } else if (chartType === 'profit') {
+                createDetailedDonutChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
+                createDetailedDonutChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
+                createDetailedDonutChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+            } else if (chartType === 'revenue') {
+                createDetailedBarChart(`${chartType}DailyChart`, data.daily, 'Daily', chartType);
+                createDetailedBarChart(`${chartType}WeeklyChart`, data.weekly, 'Weekly', chartType);
+                createDetailedBarChart(`${chartType}MonthlyChart`, data.monthly, 'Monthly', chartType);
+            }
         }
 
         /**
-         * Creates a detailed chart for expanded view
+         * Creates a detailed line chart for expanded view
          * @param {string} canvasId - ID of the canvas element
          * @param {Array} data - Data array for the chart
          * @param {string} period - Time period (Daily, Weekly, Monthly)
          * @param {string} type - Chart type
          */
-        function createDetailedChart(canvasId, data, period, type) {
+        function createDetailedLineChart(canvasId, data, period, type) {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
 
@@ -1222,14 +1239,66 @@
                         datasets: [{
                             label: period,
                             data: data,
-                            borderColor: type === 'sales' ? '#DDAA00' : 
-                                        type === 'dishes' ? '#85AAAA' : 
-                                        type === 'profit' ? '#606C38' : '#FF7F0D',
-                            backgroundColor: type === 'sales' ? 'rgba(221, 170, 0, 0.1)' : 
-                                           type === 'dishes' ? 'rgba(133, 170, 170, 0.1)' : 
-                                           type === 'profit' ? 'rgba(96, 108, 56, 0.1)' : 'rgba(255, 127, 13, 0.1)',
+                            borderColor: '#DDAA00',
+                            backgroundColor: 'rgba(221, 170, 0, 0.1)',
                             tension: 0.4,
                             fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error(`Error creating ${canvasId}:`, error);
+            }
+        }
+
+        /**
+         * Creates a detailed bar chart for expanded view
+         * @param {string} canvasId - ID of the canvas element
+         * @param {Array} data - Data array for the chart
+         * @param {string} period - Time period (Daily, Weekly, Monthly)
+         * @param {string} type - Chart type
+         */
+        function createDetailedBarChart(canvasId, data, period, type) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+
+            try {
+                const labels = period === 'Daily' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] :
+                              period === 'Weekly' ? ['Week 1', 'Week 2', 'Week 3', 'Week 4'] :
+                              ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+
+                const colors = type === 'dishes' ? '#85AAAA' : '#FF7F0D';
+                const bgColors = type === 'dishes' ? 'rgba(133, 170, 170, 0.8)' : 'rgba(255, 127, 13, 0.8)';
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: period,
+                            data: data,
+                            backgroundColor: bgColors,
+                            borderColor: colors,
+                            borderWidth: 1
                         }]
                     },
                     options: {
@@ -1250,6 +1319,58 @@
                                 }
                             }
                         }
+                    }
+                });
+            } catch (error) {
+                console.error(`Error creating ${canvasId}:`, error);
+            }
+        }
+
+        /**
+         * Creates a detailed donut chart for expanded view
+         * @param {string} canvasId - ID of the canvas element
+         * @param {Array} data - Data array for the chart
+         * @param {string} period - Time period (Daily, Weekly, Monthly)
+         * @param {string} type - Chart type
+         */
+        function createDetailedDonutChart(canvasId, data, period, type) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+
+            try {
+                const labels = period === 'Daily' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] :
+                              period === 'Weekly' ? ['Week 1', 'Week 2', 'Week 3', 'Week 4'] :
+                              ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+
+                // For donut charts, we'll show the data as segments
+                const chartData = data.map((value, index) => ({
+                    label: labels[index],
+                    value: value
+                }));
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartData.map(item => item.label),
+                        datasets: [{
+                            data: chartData.map(item => item.value),
+                            backgroundColor: [
+                                '#DDAA00', '#85AAAA', '#606C38', '#FF7F0D',
+                                '#173F4E', '#FEFAE0', '#DC2626'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#FFFFFF'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        cutout: '60%'
                     }
                 });
             } catch (error) {
