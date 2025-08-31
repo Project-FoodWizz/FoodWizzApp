@@ -1,18 +1,18 @@
 /* CSS Variables for Your Color Palette */
 :root {
-    --primary-color: #DDAA00;
-    --secondary-color: #85AAAA;
-    --dark-color: #173F4E;
-    --background-color: #FEFAE0;
-    --accent-color: #606C38;
-    --orange-color: #FF7F0D;
-    --surface-color: #FFFFFF;
-    --border-color: #E5E7EB;
-    --text-primary: #173F4E;
-    --text-secondary: #6B7280;
-    --success-color: #606C38;
-    --warning-color: #DDAA00;
-    --error-color: #DC2626;
+    --primary-color: #DDAA00; /* Gold */
+    --secondary-color: #85AAAA; /* Teal */
+    --dark-color: #173F4E; /* Dark teal */
+    --background-color: #FEFAE0; /* Light beige */
+    --accent-color: #606C38; /* Olive green */
+    --orange-color: #FF7F0D; /* Orange */
+    --surface-color: #FFFFFF; /* White */
+    --border-color: #E5E7EB; /* Light gray */
+    --text-primary: #173F4E; /* Dark teal */
+    --text-secondary: #6B7280; /* Medium gray */
+    --success-color: #606C38; /* Olive green */
+    --warning-color: #DDAA00; /* Gold */
+    --error-color: #DC2626; /* Red */
     --shadow-light: 0 0.25rem 0.75rem rgba(23, 63, 78, 0.08);
     --shadow-medium: 0 1rem 3rem rgba(23, 63, 78, 0.12);
     --shadow-heavy: 0 2rem 6.25rem rgba(23, 63, 78, 0.15);
@@ -36,16 +36,16 @@ body {
     margin: 0;
     min-height: 100vh;
     line-height: 1.6;
-    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-size: clamp(0.875rem, 2vw, 1rem); /* Responsive base font size */
 }
 
-/* Header */
+/* Header Styles */
 .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: var(--surface-color);
-    padding: clamp(1rem, 3vw, 2rem);
+    padding: clamp(1rem, 3vw, 2rem); /* Responsive padding */
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--shadow-light);
     position: sticky;
@@ -58,18 +58,18 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    gap: clamp(0.75rem, 2vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 1rem); /* Responsive gap */
 }
 
-/* Contenedor que controla la posición relativa */
+/* Logo Wrapper for Positioning */
 .logo-wrapper {
     position: relative;
     display: inline-block;
-    width: clamp(2.5rem, 6vw, 3rem);
-    height: clamp(2.5rem, 6vw, 3rem);
+    width: clamp(2.5rem, 6vw, 3rem); /* Responsive width */
+    height: clamp(2.5rem, 6vw, 3rem); /* Responsive height */
 }
 
-/* Imagen redonda del perfil */
+/* Round Profile Image */
 .logo {
     width: 100%;
     height: 100%;
@@ -86,8 +86,8 @@ body {
 
 .logo-status-dot {
     position: absolute;
-    top: 0;     
-    right: 0;    
+    top: 0;
+    right: 0;
     width: 1rem;
     height: 1rem;
     background: var(--success-color);
@@ -105,12 +105,12 @@ body {
 
 .header-left div > div:first-child {
     font-weight: 600;
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-size: clamp(0.875rem, 2.5vw, 1rem); /* Responsive font size */
     color: var(--text-primary);
 }
 
 .header-left div > div:last-child {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--text-secondary);
     margin-top: 0.125rem;
 }
@@ -118,14 +118,14 @@ body {
 .header-right {
     display: flex;
     align-items: center;
-    gap: clamp(0.75rem, 2vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 1rem); /* Responsive gap */
 }
 
 .status-online {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--success-color);
     font-weight: 500;
 }
@@ -145,21 +145,21 @@ body {
 
 .user-info b {
     display: block;
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--text-primary);
 }
 
 .user-info div {
-    font-size: clamp(0.625rem, 1.5vw, 0.75rem);
+    font-size: clamp(0.625rem, 1.5vw, 0.75rem); /* Responsive font size */
     color: var(--text-secondary);
 }
 
-/* Navigation */
+/* Navigation Styles */
 .main-nav {
     display: flex;
     background: var(--surface-color);
     border-bottom: 1px solid var(--border-color);
-    padding: 0 clamp(1rem, 3vw, 2rem);
+    padding: 0 clamp(1rem, 3vw, 2rem); /* Responsive padding */
     gap: 0.25rem;
     overflow-x: auto;
     scrollbar-width: none;
@@ -171,7 +171,7 @@ body {
 }
 
 .main-nav button {
-    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
     border: none;
     background: transparent;
     color: var(--text-secondary);
@@ -181,7 +181,7 @@ body {
     position: relative;
     white-space: nowrap;
     border-bottom: 3px solid transparent;
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
 }
 
 .main-nav button::before {
@@ -209,29 +209,30 @@ body {
     color: var(--text-primary);
 }
 
-/* Content */
+/* Content Area */
 #content {
-    padding: clamp(1rem, 4vw, 2rem);
+    padding: clamp(1rem, 4vw, 2rem); /* Responsive padding */
     max-width: 87.5rem;
     margin: 0 auto;
 }
 
-/* Dashboard Grid */
+/* Dashboard Grid Layout */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(15.625rem, 100%), 1fr));
-    gap: clamp(1rem, 3vw, 1.5rem);
-    margin-bottom: clamp(1.5rem, 4vw, 2rem);
+    gap: clamp(1rem, 3vw, 1.5rem); /* Responsive gap */
+    margin-bottom: clamp(1.5rem, 4vw, 2rem); /* Responsive margin */
 }
 
+/* Stat Card Styles */
 .stat-card {
     background: var(--surface-color);
-    padding: clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
     border-radius: var(--border-radius-large);
     box-shadow: var(--shadow-light);
     display: flex;
     align-items: center;
-    gap: clamp(0.75rem, 2vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 1rem); /* Responsive gap */
     transition: var(--transition);
     border: 1px solid var(--border-color);
     cursor: pointer;
@@ -255,14 +256,14 @@ body {
 }
 
 .stat-icon {
-    width: clamp(2.5rem, 6vw, 3rem);
-    height: clamp(2.5rem, 6vw, 3rem);
+    width: clamp(2.5rem, 6vw, 3rem); /* Responsive width */
+    height: clamp(2.5rem, 6vw, 3rem); /* Responsive height */
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--orange-color) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-size: clamp(1rem, 3vw, 1.25rem); /* Responsive font size */
     color: white;
     flex-shrink: 0;
     background-image: url('images/placeholder.png');
@@ -288,7 +289,7 @@ body {
 }
 
 .stat-content h3 {
-    font-size: clamp(1.5rem, 4vw, 1.75rem);
+    font-size: clamp(1.5rem, 4vw, 1.75rem); /* Responsive font size */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
@@ -296,17 +297,18 @@ body {
 
 .stat-content p {
     color: var(--text-secondary);
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     font-weight: 500;
 }
 
-/* Dishes Grid */
+/* Dishes Grid Layout */
 .dishes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(21.875rem, 100%), 1fr));
-    gap: clamp(1rem, 3vw, 1.5rem);
+    gap: clamp(1rem, 3vw, 1.5rem); /* Responsive gap */
 }
 
+/* Dish Card Styles */
 .dish-card {
     background: var(--surface-color);
     border-radius: var(--border-radius-large);
@@ -322,14 +324,14 @@ body {
 }
 
 .dish-image {
-    height: clamp(10rem, 25vw, 12.5rem);
+    height: clamp(10rem, 25vw, 12.5rem); /* Responsive height */
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--orange-color) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     color: white;
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(2rem, 6vw, 3rem); /* Responsive font size */
     background-image: url('images/dish_placeholder.png');
     background-size: 50%;
     background-repeat: no-repeat;
@@ -343,11 +345,11 @@ body {
 }
 
 .dish-info {
-    padding: clamp(1rem, 3vw, 1.25rem);
+    padding: clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
 }
 
 .dish-info h4 {
-    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-size: clamp(1rem, 3vw, 1.125rem); /* Responsive font size */
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--text-primary);
@@ -355,20 +357,20 @@ body {
 
 .dish-description {
     color: var(--text-secondary);
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     line-height: 1.5;
     margin-bottom: 1rem;
 }
 
 .dish-price {
-    font-size: clamp(1.125rem, 3vw, 1.25rem);
+    font-size: clamp(1.125rem, 3vw, 1.25rem); /* Responsive font size */
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
 .dish-ingredients {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--text-secondary);
     margin-bottom: 1rem;
     line-height: 1.4;
@@ -382,20 +384,20 @@ body {
 
 .dish-actions button {
     padding: 0.5rem 1rem;
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     flex: 1;
     min-width: 0;
 }
 
-/* Buttons */
+/* Button Styles */
 button {
-    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.25rem);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
     border: none;
     border-radius: var(--border-radius);
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -441,7 +443,7 @@ button:hover {
     color: white;
 }
 
-/* Forms */
+/* Form Overlay and Modal */
 .form-overlay {
     position: fixed;
     top: 0;
@@ -471,13 +473,13 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem) 0 clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem) 0 clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem); /* Responsive margin */
 }
 
 .form-header h3 {
-    font-size: clamp(1.125rem, 3vw, 1.25rem);
+    font-size: clamp(1.125rem, 3vw, 1.25rem); /* Responsive font size */
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -504,7 +506,7 @@ button:hover {
 }
 
 .form-content {
-    padding: 0 clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+    padding: 0 clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
 }
 
 .form-group {
@@ -536,10 +538,10 @@ button:hover {
 
 input, select, textarea {
     width: 100%;
-    padding: clamp(0.75rem, 2vw, 1rem);
+    padding: clamp(0.75rem, 2vw, 1rem); /* Responsive padding */
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     transition: var(--transition);
 }
 
@@ -554,7 +556,7 @@ input:focus, select:focus, textarea:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem); /* Responsive margin */
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
     flex-wrap: wrap;
@@ -563,7 +565,7 @@ input:focus, select:focus, textarea:focus {
 
 .section-header h2 {
     margin-bottom: 0;
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    font-size: clamp(1.25rem, 4vw, 1.5rem); /* Responsive font size */
     color: var(--text-primary);
     font-weight: 700;
 }
@@ -572,19 +574,19 @@ input:focus, select:focus, textarea:focus {
 .dashboard-actions {
     display: flex;
     gap: 0.75rem;
-    margin-bottom: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: clamp(1.5rem, 4vw, 2rem); /* Responsive margin */
     flex-wrap: wrap;
 }
 
 .dashboard-actions button {
-    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.25rem);
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.25rem); /* Responsive padding */
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
 }
 
-/* Chart Card */
+/* Chart Card Styles */
 .chart-card {
     background: var(--surface-color);
-    padding: clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
     border-radius: var(--border-radius-large);
     box-shadow: var(--shadow-light);
     border: 1px solid var(--border-color);
@@ -593,16 +595,16 @@ input:focus, select:focus, textarea:focus {
 .chart-card h3 {
     margin-bottom: 1rem;
     color: var(--text-primary);
-    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-size: clamp(1rem, 3vw, 1.125rem); /* Responsive font size */
     font-weight: 600;
 }
 
-/* Dashboard Charts */
+/* Dashboard Charts Layout */
 .dashboard-charts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 1fr));
-    gap: clamp(1rem, 3vw, 1.5rem);
-    margin-top: clamp(1.5rem, 4vw, 2rem);
+    gap: clamp(1rem, 3vw, 1.5rem); /* Responsive gap */
+    margin-top: clamp(1.5rem, 4vw, 2rem); /* Responsive margin */
 }
 
 /* Fixed Chart Container */
@@ -617,7 +619,7 @@ input:focus, select:focus, textarea:focus {
     max-width: 100% !important;
 }
 
-/* Promotion Placeholders */
+/* Promotion Placeholder */
 .promotion-placeholder {
     height: 200px;
     background: var(--background-color);
@@ -637,11 +639,11 @@ input:focus, select:focus, textarea:focus {
     gap: 1rem;
 }
 
-/* Distributor Cards */
+/* Distributor Card Styles */
 .distributor-card {
     background: var(--surface-color);
     border-radius: var(--border-radius-large);
-    padding: clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
     box-shadow: var(--shadow-light);
     border: 1px solid var(--border-color);
     transition: var(--transition);
@@ -660,14 +662,14 @@ input:focus, select:focus, textarea:focus {
 }
 
 .distributor-name {
-    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-size: clamp(1rem, 3vw, 1.125rem); /* Responsive font size */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
 }
 
 .distributor-specialty {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--text-secondary);
 }
 
@@ -675,7 +677,7 @@ input:focus, select:focus, textarea:focus {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--primary-color);
     font-weight: 600;
 }
@@ -688,70 +690,60 @@ input:focus, select:focus, textarea:focus {
 }
 
 .distributor-contact span {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.75rem, 2vw, 0.875rem); /* Responsive font size */
     color: var(--text-secondary);
 }
 
-/* Utility Classes */
+/* Utility Classes for Text Colors */
 .text-success { color: var(--success-color); }
 .text-warning { color: var(--warning-color); }
 .text-error { color: var(--error-color); }
 .text-primary { color: var(--primary-color); }
 .text-secondary { color: var(--text-secondary); }
 
-/* Responsive Adjustments */
+/* Responsive Adjustments for Smaller Screens */
 @media (max-width: 48rem) {
     .main-header {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
     }
-
     .header-right {
         order: -1;
     }
-
     .main-nav {
         justify-content: center;
     }
-
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-
     .inventory-grid {
         grid-template-columns: 1fr;
     }
-
     .dishes-grid {
         grid-template-columns: 1fr;
     }
-
     .form-row {
         grid-template-columns: 1fr;
     }
-
     .section-header {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
     }
-
     .form-actions {
         flex-direction: column;
     }
-
     .dish-actions,
     .inventory-actions {
         flex-direction: column;
     }
-
     .dashboard-actions {
         flex-direction: column;
     }
 }
 
-/* Notifications */
+/* Notification Styles */
 .notification {
     position: fixed;
     top: 1.25rem;
