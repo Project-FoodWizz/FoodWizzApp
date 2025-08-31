@@ -6,6 +6,8 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
+UPLOAD_FOLDER = 'static/images/ingredients'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Database initialization
 def init_db():
@@ -324,20 +326,26 @@ def get_out_of_stock_ingredients():
 
 @app.route('/api/ingredients', methods=['POST'])
 def add_ingredient():
-    data = request.get_json()
-    name = data.get('name', '').strip()
-    stock = float(data.get('stock', 0))
-    unit = data.get('unit', '').strip()
-    cost = float(data.get('cost', 0))
-    category = data.get('category', 'Other').strip()
-    image_url = data.get('image_url', '').strip()
-    min_stock = float(data.get('min_stock', 5))
-    supplier = data.get('supplier', 'Local').strip()
+    name = request.form.get('name', '').strip()
+    stock = float(request.form.get('stock', 0))
+    unit = request.form.get('unit', '').strip()
+    cost = float(request.form.get('cost', 0))
+    category = request.form.get('category', 'Other').strip()
+    min_stock = float(request.form.get('min_stock', 5))
+    supplier = request.form.get('supplier', 'Local').strip()
     
     if not all([name, unit]) or stock < 0 or cost < 0:
         return jsonify({'success': False, 'message': 'Invalid data'})
-    
+
+    image_file = request.files.get('image_file')
+    image_url = ''
+    if image_file and image_file.filename != '':
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
+        image_file.save(image_path)
+        image_url = f"/static/images/ingredients/{image_file.filename}"
+
     conn = get_db_connection()
+
     try:
         cursor = conn.execute(
             'INSERT INTO ingredients (name, stock, unit, cost, category, image_url, min_stock, supplier) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
