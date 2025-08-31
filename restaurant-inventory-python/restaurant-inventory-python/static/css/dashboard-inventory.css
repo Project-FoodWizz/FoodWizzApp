@@ -73,13 +73,13 @@
 
 /* Supplier Badge */
 .supplier-badge {
-    font-size: 0.75rem; /* Small font size */
-    font-weight: 600; /* Semi-bold */
-    color: white; /* White text */
-    background: var(--primary-color); /* Primary background color */
-    padding: 0.25rem 0.5rem; /* Inner spacing */
-    border-radius: 6px; /* Rounded corners */
-    width: fit-content; /* Fit content width */
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background: var(--primary-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    width: fit-content;
 }
 
 /* Inventory Stats Section */
