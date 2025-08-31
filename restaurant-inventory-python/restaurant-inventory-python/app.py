@@ -162,8 +162,8 @@ def load_sample_data():
 
         # Dairy & Cheese
         ("Cheese Slices", 20.0, "pack", 4.20, "Dairy", "images/ingredients/cheese_slices.jpg", 5, "Nestle"),
-        ("Mozzarella Cheese", 8.0, "kg", 7.60, "Dairy", "images/ingredients/mozzarella.jpg", 2, "Prolacsa"),
-        ("Cheddar Cheese", 6.0, "kg", 8.90, "Dairy", "images/ingredients/cheddar.jpg", 2, "PriceSmart"),
+        ("Mozzarella Cheese", 8.0, "kg", 7.60, "Dairy", "images/ingredients/mozzarella_cheese.jpg", 2, "Prolacsa"),
+        ("Cheddar Cheese", 6.0, "kg", 8.90, "Dairy", "images/ingredients/cheddar_cheese.jpg", 2, "PriceSmart"),
         ("Milk", 8.0, "l", 1.20, "Dairy", "images/ingredients/milk.jpg", 2, "Prolacsa"),
         ("Butter", 4.0, "kg", 5.40, "Dairy", "static/images/butter.jpg", 1, "Nestle"),
 
@@ -175,7 +175,7 @@ def load_sample_data():
         ("Bread Crumbs", 2.0, "kg", 4.80, "Bread", "static/images/bread_crumbs.jpg", 1, "Sysco Food Service"),
 
         # Condiments & Sauces
-        ("Mayonnaise", 4.0, "l", 3.80, "Condiments", "images/ingredients/mayo.jpg", 1, "Unilever Food Solutions"),
+        ("Mayonnaise", 4.0, "l", 3.80, "Condiments", "images/ingredients/mayonnaise.jpg", 1, "Unilever Food Solutions"),
         ("Ketchup", 6.0, "l", 2.90, "Condiments", "static/images/ketchup.jpg", 1, "Nestle"),
         ("Mustard", 3.0, "l", 2.40, "Condiments", "static/images/mustard.jpg", 1, "Sysco Food Service"),
         ("BBQ Sauce", 4.0, "l", 4.20, "Condiments", "static/images/bbq_sauce.jpg", 1, "Unilever Food Solutions"),
@@ -184,7 +184,7 @@ def load_sample_data():
 
         # Sides & Others
         ("French Fries", 8.0, "kg", 3.50, "Sides", "static/images/french_fries.jpg", 2, "PriceSmart"),
-        ("Coleslaw Mix", 3.0, "kg", 4.20, "Sides", "static/images/coleslaw.jpg", 1, "Local Farm"),
+        ("Coleslaw Mix", 3.0, "kg", 4.20, "Sides", "static/images/coleslaw_mix.jpg", 1, "Local Farm"),
         ("Pickles", 2.0, "kg", 4.50, "Vegetables", "static/images/pickles.jpg", 1, "Sysco Food Service"),
         ("Olives", 1.5, "kg", 7.80, "Vegetables", "static/images/olives.jpg", 0.5, "Panama Gourmet Foods"),
 
