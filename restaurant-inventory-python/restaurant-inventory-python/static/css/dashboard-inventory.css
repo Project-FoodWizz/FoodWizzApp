@@ -150,3 +150,8 @@
     flex: 1; /* Flexible width */
     min-width: 0; /* Allow buttons to shrink */
 }
+
+.cart-icon {
+    width: 28px;  
+    height: 28px;
+}
