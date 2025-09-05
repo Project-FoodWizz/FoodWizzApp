@@ -14,11 +14,11 @@ import sys
 from app import app, init_db
 
 def main():
-    print("🍽️  FoodWizz - Restaurant Inventory Management System")
+    print("FoodWizz - Restaurant Inventory Management System")
     print("=" * 60)
     
     # Initialize database
-    print("📦 Initializing database...")
+    print("Initializing database...")
     init_db()
     
     # Load sample data if database is empty
@@ -34,7 +34,7 @@ def main():
         ingredient_count = cursor.fetchone()[0]
         
         if ingredient_count == 0:
-            print("📋 Loading sample data...")
+            print("Loading sample data...")
             load_sample_data()
         
         conn.close()
@@ -42,10 +42,10 @@ def main():
     except Exception as e:
         print(f"⚠️  Error loading sample data: {e}")
     
-    print("\n🚀 Starting server...")
-    print("🌐 Application available at: http://localhost:5000")
-    print("🔐 Create an account or use existing credentials to access")
-    print("\n💡 Press Ctrl+C to stop the server")
+    print("\nStarting server...")
+    print("Application available at: http://localhost:5000")
+    print("Create an account or use existing credentials to access")
+    print("\nPress Ctrl+C to stop the server")
     print("=" * 60)
 
 if __name__ == '__main__':
