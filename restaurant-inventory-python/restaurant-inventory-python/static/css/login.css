@@ -1,4 +1,4 @@
-/* --- RESET Y CONFIGURACIÓN GENERAL --- */
+/* --- RESET AND GENERAL CONFIGURATION --- */
 * {
     margin: 0;
     padding: 0;
@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- COLORES --- */
+/* --- COLORS --- */
 :root {
     --primary-color: #DD7F0D;
     --secondary-color: #DDAA00;
@@ -33,7 +33,7 @@ body {
     left: 20px;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
+/* --- MAIN CONTAINER --- */
 .container {
     position: relative;
     width: 1000px;
@@ -72,7 +72,7 @@ body {
     z-index: 1;
 }
 
-/* --- FORMULARIO --- */
+/* --- FORM --- */
 .form-container form {
     width: 100%;
     max-width: 380px;
@@ -134,7 +134,7 @@ body {
     color: var(--light-text-color);
 }
 
-/* --- BOTONES --- */
+/* --- BUTTONS --- */
 button.primary-btn {
     width: 100%;
     padding: 15px;
@@ -189,7 +189,7 @@ button.primary-btn:hover {
 
 .social-btn:hover { color: var(--text-color); }
 
-/* --- LINK DE ABAJO --- */
+/* --- BOTTOM LINK --- */
 .bottom-link {
     text-align: center;
     margin-top: 30px;
@@ -271,7 +271,7 @@ button.ghost-btn:hover {
 .overlay-left { transform: translateX(-20%); }
 .overlay-right { right: 0; transform: translateX(0); }
 
-/* --- ANIMACIÓN DE PANEL --- */
+/* --- PANEL ANIMATION --- */
 .container.right-panel-active .overlay-container { transform: translateX(-100%); }
 .container.right-panel-active .overlay { transform: translateX(50%); }
 .container.right-panel-active .overlay-left { transform: translateX(0); }
