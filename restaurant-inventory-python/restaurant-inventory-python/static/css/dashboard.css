@@ -764,6 +764,12 @@ input:focus, select:focus, textarea:focus {
     display: grid;
 }
 
+.search-btn img.search-icon {
+    width: 1.2rem;   /* ajusta el tamaño */
+    height: 1.2rem;
+    object-fit: contain;
+}
+
 .expanded-chart {
     background: var(--background-color);
     border-radius: var(--border-radius);
