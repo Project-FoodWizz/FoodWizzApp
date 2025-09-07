@@ -64,25 +64,18 @@
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    background: var(--primary-color);
+    background: var(--orange-color);
     border: none;
     border-radius: 50%;
     width: 2.5rem;
     height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
     cursor: pointer;
     transition: var(--transition);
     box-shadow: var(--shadow-light);
-    overflow: hidden; /* prevents image overflow */
-}
-
-.search-btn img {
-    width: 55%;   /* image adapts within the circle */
-    height: auto; 
-    object-fit: contain;
-    filter: brightness(0) invert(1); /* makes the magnifying glass white on background */
 }
 
 /* hover */
@@ -92,6 +85,19 @@
     box-shadow: var(--shadow-medium);
 }
 
+.search-btn img {
+    display: block; 
+    object-fit: contain; 
+    padding: 1px; 
+    position: center;
+    margin-left: 6px;
+}
+
+.search-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    position: center
+}
 
 /* Reset and Base Configuration */
 * {
