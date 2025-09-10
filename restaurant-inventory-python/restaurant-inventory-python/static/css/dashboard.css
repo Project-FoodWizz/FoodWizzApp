@@ -343,26 +343,26 @@ body {
     font-size: clamp(1rem, 3vw, 1.25rem); /* Responsive font size */
     color: white;
     flex-shrink: 0;
-    background-image: url('images/placeholder.png');
+    background-image: url('../static/images/Placeholder.png');
     background-size: 60%;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .stat-icon.total-ingredients {
-    background-image: url('images/total_ingredients.png');
+    background-image: url('../static/images/total-ingredients.png');
 }
 
 .stat-icon.menu-items {
-    background-image: url('images/menu_items.png');
+    background-image: url('../static/images/menu_items.png');
 }
 
 .stat-icon.low-stock {
-    background-image: url('images/low_stock.png');
+    background-image: url('../static/images/low_stock.png');
 }
 
 .stat-icon.out-of-stock {
-    background-image: url('images/out_of_stock.png');
+    background-image: url('../static/images/out_of_stock.png');
 }
 
 .stat-content h3 {
@@ -838,7 +838,7 @@ input:focus, select:focus, textarea:focus {
     color: var(--text-secondary);
     font-size: 1rem;
     text-align: center;
-    background-image: url('images/promotion_placeholder.png');
+    background-image: url('../static/images/Placeholder.png');
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: center;
