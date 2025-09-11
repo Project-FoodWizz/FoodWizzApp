@@ -350,7 +350,7 @@ body {
 }
 
 .stat-icon.total-ingredients {
-    background-image: url('../static/images/total-ingredients.png');
+    background-image: url(''); 
 }
 
 .stat-icon.menu-items {
